@@ -52,7 +52,7 @@
         </div>
         <div class="box iteminfo locked" v-if="citem.lock">
           <span class="title">This Item needs to be unlocked!</span>
-          <span v-if="citem.uprice > 0" class="desc">You can buy it somewhere in the hub for <u>{{ citem.uprice }} {{ citem.uprice == 1 ? 'gem' : 'gems' }}</u>!</span>
+          <span v-if="citem.uprice > 0" class="desc">You can buy it somewhere in the hub for <span class="hl">{{ citem.uprice }} {{ citem.uprice == 1 ? 'gem' : 'gems' }}</span>!</span>
           <span v-if="citem.uprice == 0" class="desc">This item cannot be bought. You need to find another way to unlock it!</span>
         </div>
         <div class="box iteminfo scourged" v-if="citem.scourged">

@@ -465,7 +465,7 @@ b {
   color: unset;
 }
 
-u {
+.hl {
   text-decoration: none;
   color: var(--text);
 }
