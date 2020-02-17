@@ -69,14 +69,7 @@
         <div id="itemdetails" :class="{ used: page.type == 'itemdetails' }" v-if="lastViewedItem">
           <a href="/" button @click.prevent="gotoItemlist">Back</a>
           <div class="itemdesc">
-            <div class="box" @click.right.prevent="itemDetailsPoolsClicked()">
-              <h2 v-if="!citemPoolsStrings.length" class="align-left no-margin">Not included in any Item Pools.</h2>
-              <h2 v-if="citemPoolsStrings.length" class="align-left no-margin">Part of these Item Pools:</h2>
-              <ul v-if="citemPoolsStrings.length">
-                <li v-for="line of citemPoolsStrings" v-text="line"></li>
-              </ul>
-            </div>
-            <div class="box " @click.right.prevent="itemDetailsInfofileClicked()">
+            <div v-if="citemInfofile" class="box " @click.right.prevent="itemDetailsInfofileClicked()">
               <h2 v-if="!citemInfofile" class="align-left no-margin">No additional info provided.</h2>
               <div v-if="citemInfofile" class="content" v-html="citemInfofile">
 
@@ -86,6 +79,13 @@
               <h2 v-if="!citemUsesStrings" class="align-left no-margin">Does nothing.</h2>
               <h2 v-if="citemUsesStrings" class="align-left no-margin">Does the following:</h2>
               <span v-if="citemUsesStrings" v-html="citemUsesStrings" class="uses-list"></span>
+            </div>
+            <div class="box" @click.right.prevent="itemDetailsPoolsClicked()">
+              <h2 v-if="!citemPoolsStrings.length" class="align-left no-margin">Not included in any Item Pools.</h2>
+              <h2 v-if="citemPoolsStrings.length" class="align-left no-margin">Part of these Item Pools:</h2>
+              <ul v-if="citemPoolsStrings.length">
+                <li v-for="line of citemPoolsStrings" v-text="line"></li>
+              </ul>
             </div>
           </div>
         </div>
