@@ -147,21 +147,7 @@ function parseBkstr(string) {
 
     out = `<span class="bkstr">${out}</span>`;
   }
-  if (string.includes('Fragile')) console.log(active);
-  // for (let token in tokens) {
-  //   const parts = string.split(token);
-  //   if (parts.length % 2 == 0) {
-  //     parts[parts.length - 2] += parts.splice(parts.length-1)[0];
-  //   }
-  //   string = '';
-  //   for (let i = 0; i < parts.length; i++) {
-  //     if (i) {
-  //       if (i % 2) string += `<span class="bkstr ${tokens[token]}">`;
-  //       else string += '</span>';
-  //     }
-  //     string += parts[i];
-  //   }
-  // }
+  
   return out || string;
 }
 
