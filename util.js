@@ -40,6 +40,7 @@ function stringifyId(id) {
 
 const showdownConv = new showdown.Converter();
 showdownConv.setOption("strikethrough", true)
+showdownConv.setOption("underline", true)
 /**
  * Converts markdown to HTML using the showdown converter
  * @param {string} md 
@@ -147,7 +148,7 @@ function parseBkstr(string) {
 
     out = `<span class="bkstr">${out}</span>`;
   }
-  
+
   return out || string;
 }
 

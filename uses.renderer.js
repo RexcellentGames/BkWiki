@@ -23,9 +23,9 @@ function renderUses(uses) {
 /* The renderer */
 
 renderers["bk:MeleeArc"] = function(use) {
-  return `Creates a melee arc that does ${use.damage} damage and lasts for ${properRound(use.time, 2)} seconds`
+  return `Creates a melee arc that does **${use.damage}** damage and lasts for **${properRound(use.time, 2)}** seconds`
 }
 
 renderers["bk:SimpleShoot"] = function(use) {
-  return `Shoots ${use.amount == 1 ? "a projectile that deals " : `${use.amount} projectiles that deal `} ${use.damage} damage`
+  return `Shoots ${use.amount == 1 ? "a projectile that deals " : `**${use.amount}** projectiles that deal `} **${use.damage}** damage`
 }
