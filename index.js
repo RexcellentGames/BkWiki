@@ -149,6 +149,14 @@ const app = new Vue({
       }
       contextMenu(options)
     },
+    itemDetailsNameboxClicked: function() {
+      contextMenu([
+        { text: 'Copy Name', action: () => copyToClipboard(this.citem.dispName) },
+        { text: 'Copy ID', action: () => copyToClipboard(this.citem.id) },
+        { text: 'Copy Category', action: () => copyToClipboard(ITEM_TYPES[this.citem.type+1]) },
+        { text: 'Copy Description', action: () => copyToClipboard(this.citem.desc || 'none') },
+      ]);
+    },
     itemDetailsPoolsClicked: function() {
       contextMenu([
         {
@@ -271,6 +279,7 @@ function loadItems() {
           item.dispName = app.lang[item.id] || stringifyId(item.id);
           item.imgURL = `https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/images/${item.id}.png`;
           item.desc = app.lang[`${item.id}_desc`] || '';
+          item.dispDesc = parseBkstr(item.desc);
         }
         Vue.set(app, 'allItems', o);
         app.$nextTick(updateItemlist);

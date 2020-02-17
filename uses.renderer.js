@@ -1,4 +1,4 @@
-var renderers = {};
+let renderers = {};
 
 /**
  * Renders a single item use
@@ -6,13 +6,8 @@ var renderers = {};
  * @returns {string} The rendered HTML
  */
 function renderUse(use) {
-  var renderer = renderers[use.id];
-
-  if (renderer) {
-    return renderer(use);
-  }
-
-  return use.id;
+  const renderer = renderers[use.id];
+  return renderer ? renderer(use) : use.id;
 }
 
 /**
@@ -21,24 +16,16 @@ function renderUse(use) {
  * @returns {string} The rendered HTML
  */
 function renderUses(uses) {
-  var result = [];
-
-  for (var use in uses) {
-    var data = renderUse(uses[use]);
-
-    if (data) {
-      result.push("\n* ");
-      result.push(data);
-    }
-  }
-
-  return mdToHtml(result.join(""));
+  const out = uses.map(u => `\n* ${renderUse(u)}`);
+  return mdToHtml(out.join(''));
 }
 
+/* The renderer */
+
 renderers["bk:MeleeArc"] = function(use) {
-  return `Creates a melee arc, that does ${use.damage} damage and lasts for ${use.time} seconds`
+  return `Creates a melee arc that does ${use.damage} damage and lasts for ${properRound(use.time, 2)} seconds`
 }
 
 renderers["bk:SimpleShoot"] = function(use) {
-  return `Shoots ${use.amount == 1 ? "a projectile, that deals " : `${use.amount} projectiles, that deal `} ${use.damage} damage`
+  return `Shoots ${use.amount == 1 ? "a projectile that deals " : `${use.amount} projectiles that deal `} ${use.damage} damage`
 }

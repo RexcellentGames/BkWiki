@@ -44,11 +44,11 @@
         <div class="imgcont">
           <img id="hoverItem" :src="citem.imgURL" alt="Item" draggable="false" @click.right.prevent="itemDetailsIconClicked()">
         </div>
-        <div class="box">
+        <div class="box" @click.right.prevent="itemDetailsNameboxClicked()">
           <h2 class="no-margin" v-text="citem.dispName"></h2>
           <h4 class="no-margin" v-text="citem.type ? `${ITEM_TYPES[citem.type+1]} &bull; ${citem.id}` : citem.id"></h4>
           <div v-if="citem.desc" style="display: block; height: 30px"></div>
-          <span v-if="citem.desc" class="align-center" v-text="citem.desc"></span>
+          <span v-if="citem.desc" class="align-center larger-text" v-html="citem.dispDesc"></span>
         </div>
         <div class="box iteminfo locked" v-if="citem.lock">
           <span class="title">This Item needs to be unlocked!</span>
@@ -69,18 +69,15 @@
         <div id="itemdetails" :class="{ used: page.type == 'itemdetails' }" v-if="lastViewedItem">
           <a href="/" button @click.prevent="gotoItemlist">Back</a>
           <div class="itemdesc">
-            <div v-if="citemInfofile" class="box " @click.right.prevent="itemDetailsInfofileClicked()">
-              <h2 v-if="!citemInfofile" class="align-left no-margin">No additional info provided.</h2>
-              <div v-if="citemInfofile" class="content" v-html="citemInfofile">
-
-              </div>
+            <div class="box collapseable" :class="{ collapsed: !citemInfofile || page.type != 'itemdetails', full: !citemInfofile }" @click.right.prevent="itemDetailsInfofileClicked()">
+              <div v-if="citemInfofile" class="content contains-md" v-html="citemInfofile"></div>
             </div>
-            <div class="box" @click.right.prevent="itemDetailsUsesClicked()">
+            <div class="box collapseable" :class="{ collapsed: page.type != 'itemdetails' }" @click.right.prevent="itemDetailsUsesClicked()">
               <h2 v-if="!citemUsesStrings" class="align-left no-margin">Does nothing.</h2>
               <h2 v-if="citemUsesStrings" class="align-left no-margin">Does the following:</h2>
-              <span v-if="citemUsesStrings" v-html="citemUsesStrings" class="uses-list"></span>
+              <span v-if="citemUsesStrings" v-html="citemUsesStrings" class="uses-list contains-md"></span>
             </div>
-            <div class="box" @click.right.prevent="itemDetailsPoolsClicked()">
+            <div class="box collapseable" :class="{ collapsed: page.type != 'itemdetails' }" @click.right.prevent="itemDetailsPoolsClicked()">
               <h2 v-if="!citemPoolsStrings.length" class="align-left no-margin">Not included in any Item Pools.</h2>
               <h2 v-if="citemPoolsStrings.length" class="align-left no-margin">Part of these Item Pools:</h2>
               <ul v-if="citemPoolsStrings.length">
