@@ -76,16 +76,16 @@
                 <li v-for="line of citemPoolsStrings" v-text="line"></li>
               </ul>
             </div>
-            <div class="box" @click.right.prevent="itemDetailsUsesClicked()">
-              <h2 v-if="!citemUsesStrings" class="align-left no-margin">Does nothing.</h2>
-              <h2 v-if="citemUsesStrings" class="align-left no-margin">Does the following:</h2>
-              <span v-if="citemUsesStrings" v-text="citemUsesStrings" class="uses-list"></span>
-            </div>
             <div class="box " @click.right.prevent="itemDetailsInfofileClicked()">
               <h2 v-if="!citemInfofile" class="align-left no-margin">No additional info provided.</h2>
               <div v-if="citemInfofile" class="content" v-html="citemInfofile">
 
               </div>
+            </div>
+            <div class="box" @click.right.prevent="itemDetailsUsesClicked()">
+              <h2 v-if="!citemUsesStrings" class="align-left no-margin">Does nothing.</h2>
+              <h2 v-if="citemUsesStrings" class="align-left no-margin">Does the following:</h2>
+              <span v-if="citemUsesStrings" v-html="citemUsesStrings" class="uses-list"></span>
             </div>
           </div>
         </div>
