@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<!-- Website made by Maanex (maanex.tk) -->
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Source+Code+Pro&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="image/png" href="https://cdn.discordapp.com/emojis/556781292276940810.png">
+  <link rel="stylesheet" type="text/css" href="./index.min.css">
+  <script src="./lib/vue.min.js"></script>
+  <script src="./lib/showdown.min.js"></script>
+</head>
+<body>
+  <div id="app" @click.right.prevent @click.left="closeContextMenu()">
+    <textarea id="clipboard"></textarea>
+    <title v-text="windowTitle">Burning Knight Wiki</title>
+
+    <div id="context-menu-cont" @click.left="closeContextMenu()">
+      <div id="context-menu">
+        <a class="option" v-for="option of contextMenu.options" href="#" v-text="option.text" @click.prevent="option.action"></a>
+      </div>
+    </div>
+    <div id="sidebar-cont">
+      <div class="sidebar down" :class="{ 'out': page.type != 'itemlist' }">
+        <img src="./assets/logo.png" alt="Burning Knight Logo" id="logo" draggable="false">
+        <div class="box">
+          <h2>Filter</h2>
+          <label for="item-filter-name">Item Name</label>
+          <input type="text" id="item-filter-name" v-model="itemlist.filter.name" spellcheck="false" placeholder="Sword">
+          <label for="item-filter-type">Item Type</label>
+          <select type="text" id="item-filter-type" v-model="itemlist.filter.type">
+            <option v-for="(name,index) of ITEM_TYPES" v-text="name"></option>
+          </select>
+          <label for="item-filter-sort">Sort by</label>
+          <select type="text" id="item-filter-sort" v-model="itemlist.filter.sort">
+            <option v-for="(name,index) of itemSort" v-text="name"></option>
+          </select>
+        </div>
+      </div>
+      <div id="itemdetails-sidebar" class="sidebar up" :class="{ 'out': page.type != 'itemdetails' }" v-if="lastViewedItem">
+        <div class="imgcont">
+          <img id="hoverItem" :src="citem.imgURL" alt="Item" draggable="false" @click.right.prevent="itemDetailsIconClicked()">
+        </div>
+        <div class="box">
+          <h2 class="no-margin" v-text="citem.dispName"></h2>
+          <h4 class="no-margin" v-text="citem.type ? `${ITEM_TYPES[citem.type+1]} &bull; ${citem.id}` : citem.id"></h4>
+          <div v-if="citem.desc" style="display: block; height: 30px"></div>
+          <span v-if="citem.desc" class="align-center" v-text="citem.desc"></span>
+        </div>
+        <div class="box iteminfo locked" v-if="citem.lock">
+          <span class="title">This Item needs to be unlocked!</span>
+          <span v-if="citem.uprice > 0" class="desc">You can buy it somewhere in the hub for <u>{{ citem.uprice }} {{ citem.uprice == 1 ? 'gem' : 'gems' }}</u>!</span>
+          <span v-if="citem.uprice == 0" class="desc">This item cannot be bought. You need to find another way to unlock it!</span>
+        </div>
+        <div class="box iteminfo scourged" v-if="citem.scourged">
+          <span class="title">This Item is Scourged!</span>
+          <span class="desc">Picking up this item increases your scourge level!</span>
+        </div>
+      </div>
+    </div>
+    <div id="content-cont">
+      <div id="content">
+        <div id="itemlist" :class="{ used: page.type == 'itemlist' }">
+          <bkitem v-for="item of items" :data="item"></bkitem>
+        </div>
+        <div id="itemdetails" :class="{ used: page.type == 'itemdetails' }" v-if="lastViewedItem">
+          <a href="/" button @click.prevent="gotoItemlist">Back</a>
+          <div class="itemdesc">
+            <div class="box" @click.right.prevent="itemDetailsPoolsClicked()">
+              <h2 v-if="!citemPoolsStrings.length" class="align-left no-margin">Not included in any Item Pools.</h2>
+              <h2 v-if="citemPoolsStrings.length" class="align-left no-margin">Part of these Item Pools:</h2>
+              <ul v-if="citemPoolsStrings.length">
+                <li v-for="line of citemPoolsStrings" v-text="line"></li>
+              </ul>
+            </div>
+            <div class="box" @click.right.prevent="itemDetailsUsesClicked()">
+              <h2 v-if="!citemUsesStrings" class="align-left no-margin">Does nothing.</h2>
+              <h2 v-if="citemUsesStrings" class="align-left no-margin">Does the following:</h2>
+              <span v-if="citemUsesStrings" v-text="citemUsesStrings" class="uses-list"></span>
+            </div>
+            <div class="box " @click.right.prevent="itemDetailsInfofileClicked()">
+              <h2 v-if="!citemInfofile" class="align-left no-margin">No additional info provided.</h2>
+              <div v-if="citemInfofile" class="content" v-html="citemInfofile">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- bk stands for burger king in this case -->
+  <template id="t-bkitem">
+    <a class="box bkitem" :class="{ focus: isFocusElement }" :href="`/?item=${this.data.id}`" @click.left.prevent="openDetails" @click.right.prevent="openContextMenu">
+      <div class="imgcont">
+        <img :src="data.imgURL" alt="icon">
+      </div>
+      <h3 v-html="data.dispName || data.id" :title="data.dispName || data.id"></h3>
+      <h4 v-html="data.dispId || data.id" :title="data.id"></h4>
+    </a>
+  </template>
+
+  <script src="./data.js"></script>
+  <script src="./util.js"></script>
+  <script src="./uses.renderer.js"></script>
+  <script src="./index.js"></script>
+</body>
+</html>
