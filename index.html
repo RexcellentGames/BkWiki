@@ -6,12 +6,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3d3d3d" id="metacolor">
+
+  <meta name="description" content="TODO">
+  <meta name="keywords" content="TODO, TODO, TODO">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TODO">
+  <meta name="twitter:description" content="TODO">
+  <meta name="twitter:site" content="@rexcellentgames">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://burningknight.com/">
+  <meta property="og:title" content="Burning Knight Wiki">
+  <meta property="og:description" content="TODO">
+  <meta property="og:image" content="http://picsum.photos/200/300">
+  <meta property="og:site_name" content="TODO">
+  <meta property="og:locale" content="en-US">
 
   <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Source+Code+Pro&display=swap" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="https://cdn.discordapp.com/emojis/556781292276940810.png">
   <link rel="stylesheet" type="text/css" href="./index.min.css">
+
   <script src="./lib/vue.min.js"></script>
   <script src="./lib/showdown.min.js"></script>
+  <script src="./lib/maastr.min.js"></script>
 </head>
 <body>
   <div id="app" @click.right.prevent @click.left="closeContextMenu()">
@@ -34,10 +53,18 @@
           <select type="text" id="item-filter-type" v-model="itemlist.filter.type">
             <option v-for="(name,index) of ITEM_TYPES" v-text="name"></option>
           </select>
+          <label for="item-filter-pool">Included in</label>
+          <select type="text" id="item-filter-pool" v-model="itemlist.filter.pool">
+            <option v-for="(name,index) of DISP_ITEM_POOLS" v-text="name"></option>
+          </select>
           <label for="item-filter-sort">Sort by</label>
           <select type="text" id="item-filter-sort" v-model="itemlist.filter.sort">
             <option v-for="(name,index) of itemSort" v-text="name"></option>
           </select>
+          <div class="footer">
+            <span v-text="items.length + (items.length == 1 ? ' Item found' : ' Items found')"></span>
+            <a href="#" @click.prevent="resetItemlistFilter()">Reset Filter</a>
+          </div>
         </div>
       </div>
       <div id="itemdetails-sidebar" class="sidebar up" :class="{ 'out': page.type != 'itemdetails' }" v-if="lastViewedItem">
@@ -81,7 +108,7 @@
               <h2 v-if="!citemPoolsStrings.length" class="align-left no-margin">Not included in any Item Pools.</h2>
               <h2 v-if="citemPoolsStrings.length" class="align-left no-margin">Part of these Item Pools:</h2>
               <ul v-if="citemPoolsStrings.length">
-                <li v-for="line of citemPoolsStrings" v-text="line"></li>
+                <li v-for="line of citemPoolsStrings"><a href="#" class="reduced-deco" v-text="line" @click.prevent="itemlist.filter.pool=line;gotoItemlist()"></a></li>
               </ul>
             </div>
           </div>
@@ -101,8 +128,8 @@
     </a>
   </template>
 
-  <script src="./data.js"></script>
   <script src="./util.js"></script>
+  <script src="./data.js"></script>
   <script src="./uses.renderer.js"></script>
   <script src="./index.js"></script>
 </body>

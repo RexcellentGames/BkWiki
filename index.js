@@ -55,7 +55,8 @@ const app = new Vue({
     itemlist: {
       filter: {
         name: '',
-        type: 'All',
+        type: 'Show All',
+        pool: 'Show All',
         sort: 'Default',
       },
       focusElement: ''
@@ -81,6 +82,7 @@ const app = new Vue({
   watch: {
     'itemlist.filter.name': function() { this.$nextTick(updateItemlist); },
     'itemlist.filter.type': function() { this.$nextTick(updateItemlist); },
+    'itemlist.filter.pool': function() { this.$nextTick(updateItemlist); },
     'itemlist.filter.sort': function() { this.$nextTick(updateItemlist); },
     'page': function(page) {
       var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
@@ -190,6 +192,14 @@ const app = new Vue({
     gotoItemlist: function() {
       Vue.set(app, 'page', { type: 'itemlist' });
       history.pushState({ type: 'itemlist' }, 'Burning Knight Wiki', `/`);
+    },
+    resetItemlistFilter: function() {
+      this.itemlist.filter = {
+        name: '',
+        type: 'Show All',
+        pool: 'Show All',
+        sort: 'Default',
+      };
     }
   }
 });
@@ -203,7 +213,8 @@ function updateItemlist() {
 
   for (let item of allItemsCopy) {
     if (itemNameSearchFilter(item)
-     && itemTypeFilter(item)) {
+     && itemTypeFilter(item)
+     && itemPoolFilter(item)) {
       list.push(item);
     }
   }
@@ -221,6 +232,12 @@ function updateItemlist() {
   }
 
   Vue.set(this, 'items', list);
+}
+
+function itemPoolFilter(item) {
+  const index = DISP_ITEM_POOLS.indexOf(app.itemlist.filter.pool) - 1;
+  if (index < 0) return true;
+  return !!((item.pool >> index) % 2);
 }
 
 function itemTypeFilter(item) {

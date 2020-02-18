@@ -113,6 +113,14 @@ html, body, #app, #context-menu-cont {
   font-size: 14pt;
 }
 
+.no-deco {
+  text-decoration: none;
+}
+
+.reduced-deco:not(:hover) {
+  text-decoration: none;
+}
+
 /* */
 #context-menu-cont {
   background-color: transparent !important;
@@ -200,6 +208,29 @@ html, body, #app, #context-menu-cont {
 .sidebar.out.up {
   -webkit-transform: translateY(-2vh);
           transform: translateY(-2vh);
+}
+
+.sidebar .footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 20px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.sidebar .footer * {
+  display: inline-block;
+  color: var(--min);
+  text-decoration: none;
+  -webkit-transition: none;
+  transition: none;
+}
+
+.sidebar .footer a:hover {
+  text-decoration: underline;
+  color: var(--sub);
 }
 
 #logo {

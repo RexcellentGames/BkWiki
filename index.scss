@@ -78,6 +78,8 @@ html, body, #app, #context-menu-cont {
 .no-padding-left { padding-left: 0 !important }
 .no-padding-right { padding-right: 0 !important }
 .larger-text { font-size: 14pt; }
+.no-deco { text-decoration: none; }
+.reduced-deco:not(:hover) { text-decoration: none; }
 
 /* */
 
@@ -149,6 +151,24 @@ html, body, #app, #context-menu-cont {
 
     &.down { transform: translateY(2vh) }
     &.up { transform: translateY(-2vh) }
+  }
+
+  .footer {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+
+    * {
+      display: inline-block;
+      color: var(--min);
+      text-decoration: none;
+      transition: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: var(--sub);
+    }
   }
 }
 

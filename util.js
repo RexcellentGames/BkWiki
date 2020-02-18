@@ -39,8 +39,8 @@ function stringifyId(id) {
 }
 
 const showdownConv = new showdown.Converter();
-showdownConv.setOption("strikethrough", true)
-showdownConv.setOption("underline", true)
+showdownConv.setOption("strikethrough", true);
+showdownConv.setOption("underline", true);
 /**
  * Converts markdown to HTML using the showdown converter
  * @param {string} md 
@@ -59,97 +59,23 @@ function properRound(number, decimals = 0) {
   return Math.round((number + Number.EPSILON) * (10 ** decimals)) / (10 ** decimals);
 }
 
+maastr.default.tokens = {
+  '_': [ 'italic', false, false ],
+  '**': [ 'bold', false, false ],
+  '##': [ 'shake', true, false ],
+  '@@': [ 'blink', false, false ],
+  '&&': [ 'flip', false, false ],
+  '%%': [ 'rainbow', true, false ],
+  '^^': [ 'wave', true, false ]
+};
+maastr.default.settings.prefix = '<span class="bkstr">';
+maastr.default.settings.suffix = '</span>';
 /**
  * Parses strings with the ingame format and renders them in HTML
  * @param {string} string The string to parse
  */
 function parseBkstr(string) {
-  // name, each char seperate, alternation boolean used by the c o d e
-  const tokens = {
-    '_': [ 'italic', false, false ],
-    '**': [ 'bold', false, false ],
-    '##': [ 'shake', true, false ],
-    '@@': [ 'blink', false, false ],
-    '&&': [ 'flip', false, false ],
-    '%%': [ 'rainbow', true, false ],
-    '^^': [ 'wave', true, false ]
-  };
-  let active = [ [] ]; // contains the modifiers active at a certain index, index 0 is before the first character
-  let lastChar = '';
-  let splitted = string.split('');
-  let out = '';
-  let pos = 0;
-
-  // Go through every char in the string and detect tokens
-  // Toggle last boolean in the token object (technically array)
-  // Add all tokens that are active (last bool == true) to the active[] array
-  for (let i = 0; i < splitted.length; i++) {
-    let char = splitted[i];
-    let full = lastChar + char;
-    if (tokens[char]) {
-      tokens[char][2] = !tokens[char][2];
-      lastChar = '';
-    } else if (tokens[full]) {
-      out = out.substr(0, out.length - 1);
-      tokens[full][2] = !tokens[full][2];
-      lastChar = '';
-      pos--;
-    } else {
-      out += char;
-      lastChar = char;
-      pos++;
-    }
-    active[pos] = [];
-    for (let token of Object.values(tokens)) {
-      if (token[2]) active[pos].push(token);
-    }
-  }
-
-  string = out;
-  out = '';
-
-  // If custom styling is present
-  // Go through every character again
-  // Check which tags to open and which to close by looking at the active[] array
-  if (Object.keys(active).length) {
-    for (let i = 0; i < string.length; i++) {
-      let bulk = [];
-      let open = [];
-      let close = 0;
-      for (let token of active[i]) {
-        if (token[1]) bulk.push(token[0]);
-        else {
-          if (i == 0 || !active[i-1].filter(o => o[0] == token[0]).length) {
-            open.push(token[0]);
-          } else if (i == string.length - 1 || !active[i+1].filter(o => o[0] == token[0]).length) {
-            close++;
-          }
-        }
-      }
-
-      let add = string.split('')[i];
-      if (bulk && add == ' ') add = '&nbsp;';
-
-      if (bulk.length) {
-        add = `<span class="${bulk.join(' ')}">${add}</span>`;
-      }
-
-      if (open.length) {
-        for (let tag of open)
-          add = `<span class="${tag}">${add}`;
-      }
-
-      if (close) {
-        add += '</span>'.repeat(close);
-      }
-
-      out += add;
-    }
-
-    out = `<span class="bkstr">${out}</span>`;
-  }
-
-  return out || string;
+  return maastr.parse(string);
 }
 
 /* Context menu */

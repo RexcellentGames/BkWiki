@@ -1,6 +1,6 @@
 
 const ITEM_TYPES = [
-  "All",
+  "Show All",
   "Artifact",
   "Active",
   "Coin",
@@ -45,3 +45,5 @@ const ITEM_POOLS = [
   "duck_chest",
   "gobetta",
 ];
+
+const DISP_ITEM_POOLS = (['Show All',...ITEM_POOLS]).map(stringifyId);
