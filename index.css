@@ -184,7 +184,7 @@ html, body, #app, #context-menu-cont {
   left: 0;
   padding: 30px;
   width: 100%;
-  max-height: 100vh;
+  max-height: calc(100vh - 60px);
   overflow: auto;
   opacity: 1;
   -webkit-transform: translateY(0);
@@ -210,7 +210,7 @@ html, body, #app, #context-menu-cont {
           transform: translateY(-2vh);
 }
 
-.sidebar .footer {
+.sidebar .botrow {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -220,7 +220,7 @@ html, body, #app, #context-menu-cont {
           justify-content: space-between;
 }
 
-.sidebar .footer * {
+.sidebar .botrow * {
   display: inline-block;
   color: var(--min);
   text-decoration: none;
@@ -228,9 +228,54 @@ html, body, #app, #context-menu-cont {
   transition: none;
 }
 
-.sidebar .footer a:hover {
+.sidebar .botrow a:hover {
   text-decoration: underline;
   color: var(--sub);
+}
+
+.sidebar .sidebar-flex-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.sidebar .sidebar-flex-wrapper * {
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.sidebar .sidebar-flex-wrapper .dyn-spacer {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.sidebar .footer {
+  display: block;
+  margin-top: 20px;
+  font-size: 9pt;
+  text-align: center;
+  color: var(--min);
+  opacity: .6;
+}
+
+.sidebar .footer a {
+  color: inherit;
+}
+
+.sidebar .footer a:hover {
+  color: var(--text);
 }
 
 #logo {

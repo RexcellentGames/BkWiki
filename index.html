@@ -44,26 +44,32 @@
     </div>
     <div id="sidebar-cont">
       <div class="sidebar down" :class="{ 'out': page.type != 'itemlist' }">
-        <img src="./assets/logo.png" alt="Burning Knight Logo" id="logo" draggable="false">
-        <div class="box">
-          <h2>Filter</h2>
-          <label for="item-filter-name">Item Name</label>
-          <input type="text" id="item-filter-name" v-model="itemlist.filter.name" spellcheck="false" placeholder="Sword">
-          <label for="item-filter-type">Item Type</label>
-          <select type="text" id="item-filter-type" v-model="itemlist.filter.type">
-            <option v-for="(name,index) of ITEM_TYPES" v-text="name"></option>
-          </select>
-          <label for="item-filter-pool">Included in</label>
-          <select type="text" id="item-filter-pool" v-model="itemlist.filter.pool">
-            <option v-for="(name,index) of DISP_ITEM_POOLS" v-text="name"></option>
-          </select>
-          <label for="item-filter-sort">Sort by</label>
-          <select type="text" id="item-filter-sort" v-model="itemlist.filter.sort">
-            <option v-for="(name,index) of itemSort" v-text="name"></option>
-          </select>
+        <div class="sidebar-flex-wrapper">
+          <img src="./assets/logo.png" alt="Burning Knight Logo" id="logo" draggable="false">
+          <div class="box">
+            <h2>Filter</h2>
+            <label for="item-filter-name">Item Name</label>
+            <input type="text" id="item-filter-name" v-model="itemlist.filter.name" spellcheck="false" placeholder="Sword">
+            <label for="item-filter-type">Item Type</label>
+            <select type="text" id="item-filter-type" v-model="itemlist.filter.type">
+              <option v-for="(name,index) of ITEM_TYPES" v-text="name"></option>
+            </select>
+            <label for="item-filter-pool">Included in</label>
+            <select type="text" id="item-filter-pool" v-model="itemlist.filter.pool">
+              <option v-for="(name,index) of DISP_ITEM_POOLS" v-text="name"></option>
+            </select>
+            <label for="item-filter-sort">Sort by</label>
+            <select type="text" id="item-filter-sort" v-model="itemlist.filter.sort">
+              <option v-for="(name,index) of itemSort" v-text="name"></option>
+            </select>
+            <div class="botrow">
+              <span v-text="items.length + (items.length == 1 ? ' Item found' : ' Items found')"></span>
+              <a href="#" @click.prevent="resetItemlistFilter()">Reset Filter</a>
+            </div>
+          </div>
+          <div class="dyn-spacer"></div>
           <div class="footer">
-            <span v-text="items.length + (items.length == 1 ? ' Item found' : ' Items found')"></span>
-            <a href="#" @click.prevent="resetItemlistFilter()">Reset Filter</a>
+            Website&nbsp;made&nbsp;by&nbsp;<a href="https://maanex.tk/?utm_campain=credits&utm_source=burningknight&utm_medium=itemwiki">Maanex</a>&nbsp;with help&nbsp;from&nbsp;<a href="https://twitter.com/egordorichev">Egor&nbsp;Dorichev</a>.
           </div>
         </div>
       </div>
