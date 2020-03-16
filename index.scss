@@ -270,12 +270,28 @@ html, body, #app, #context-menu-cont {
   width: 140px;
   text-decoration: none;
   transform: translateY(0);
-  transition: transform .1s ease-out, background .1s ease-out, box-shadow .1s ease-out;
+  transition: transform .1s ease-out,
+              background .1s ease-out,
+              box-shadow .1s ease-out,
+              opacity .3s ease-out .5s;
+
+  @for $i from 0 through 40 {
+    &:nth-child(#{$i}) {  
+      transition: transform .1s ease-out,
+                  background .1s ease-out,
+                  box-shadow .1s ease-out,
+                  opacity .3s ease-out #{$i * .01s};
+    }
+  }
 
   &:hover, &.focus {
     background: var(--bg3);
     box-shadow: 0 5px 7px #00000044;
     transform: translateY(-2px);
+  }
+
+  body:not(.ready) & {
+    opacity: 0;
   }
 }
 

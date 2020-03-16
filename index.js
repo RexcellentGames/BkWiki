@@ -51,19 +51,21 @@ const app = new Vue({
     allItems: [ ],
     items: [ ],
     lang: { },
+    colorData: { },
 
     itemlist: {
       filter: {
         name: '',
         type: 'Show All',
         pool: 'Show All',
-        sort: 'Default',
+        sort: 'Color ▼',
       },
       focusElement: ''
     },
 
     itemSort: [
-      'Default',
+      'Color ▼',
+      'Color ▲',
       'Name ▼',
       'Name ▲',
     ],
@@ -198,7 +200,7 @@ const app = new Vue({
         name: '',
         type: 'Show All',
         pool: 'Show All',
-        sort: 'Default',
+        sort: 'Color ▼',
       };
     }
   }
@@ -220,18 +222,22 @@ function updateItemlist() {
   }
 
   const sortIndex = app.itemSort.indexOf(data.sort);
-  if (sortIndex > 0) {
-    switch (sortIndex) {
-      case 1:
-        list.sort((a, b) => (a.dispName.toLowerCase() < b.dispName.toLowerCase()) ? -1 : 1);
-        break;
-      case 2:
-        list.sort((a, b) => (a.dispName.toLowerCase() < b.dispName.toLowerCase()) ? 1 : -1);
-        break;
-    }
+  switch (sortIndex) {
+    case 0:
+      list.sort((a, b) => ((app.colorData[a.id] || 0) < (app.colorData[b.id] || 0)) ? 1 : -1);
+      break;
+    case 1:
+      list.sort((a, b) => ((app.colorData[a.id] || 0) < (app.colorData[b.id] || 0)) ? -1 : 1);
+      break;
+    case 2:
+      list.sort((a, b) => (a.dispName.toLowerCase() < b.dispName.toLowerCase()) ? -1 : 1);
+      break;
+    case 3:
+      list.sort((a, b) => (a.dispName.toLowerCase() < b.dispName.toLowerCase()) ? 1 : -1);
+      break;
   }
 
-  Vue.set(this, 'items', list);
+  Vue.set(app, 'items', list);
 }
 
 function itemPoolFilter(item) {
@@ -309,6 +315,21 @@ function loadItems() {
   });
 }
 
+function loadColorData() {
+  return new Promise((res, rej) => {
+    fetch('/assets/test.json')
+      .then(res => res.json())
+      .then(o => {
+        Vue.set(app, 'colorData', o);
+        res();
+      })
+      .catch(err => {
+        console.error(err);
+        rej();
+      });
+  });
+}
+
 function parseUrlData() {
   const url = new URL(location.href);
   if (url.searchParams.has('item')) {
@@ -356,9 +377,12 @@ function startItemHoverAnim() {
 async function init() {
   await loadLang();
   await loadItems();
+  await loadColorData();
   parseUrlData();
   addPopstateListener();
   addKeyboardListeners();
+  updateItemlist();
+  document.body.classList.add('ready');
 
   startItemHoverAnim();
 }
