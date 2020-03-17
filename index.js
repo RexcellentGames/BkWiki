@@ -317,7 +317,7 @@ function loadItems() {
 
 function loadColorData() {
   return new Promise((res, rej) => {
-    fetch('https://github.com/egordorichev/BurningWiki/blob/master/data/color.json')
+    fetch('https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/color.json')
       .then(res => res.json())
       .then(o => {
         Vue.set(app, 'colorData', o);
