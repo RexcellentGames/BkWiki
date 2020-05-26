@@ -208,10 +208,10 @@ const app = new Vue({
 
 /* Itemlist search / filter */
 
-function updateItemlist() {
+function updateItemlist(input = app.allItems) {
   const list = [ ];
   const data = app.itemlist.filter;
-  const allItemsCopy = JSON.parse(JSON.stringify(app.allItems));
+  const allItemsCopy = JSON.parse(JSON.stringify(input));
 
   for (let item of allItemsCopy) {
     if (itemNameSearchFilter(item)
@@ -238,6 +238,7 @@ function updateItemlist() {
   }
 
   Vue.set(app, 'items', list);
+  return list;
 }
 
 function itemPoolFilter(item) {
@@ -304,8 +305,8 @@ function loadItems() {
           item.desc = app.lang[`${item.id}_desc`] || '';
           item.dispDesc = parseBkstr(item.desc);
         }
-        Vue.set(app, 'allItems', o);
-        app.$nextTick(updateItemlist);
+        const items = updateItemlist(o);
+        app.$nextTick(() => Vue.set(app, 'allItems', items));
         res();
       })
       .catch(err => {
