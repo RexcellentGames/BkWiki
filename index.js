@@ -125,7 +125,7 @@ const app = new Vue({
     citemInfofile: function() {
       if (this.citem.infofile) return this.citem.infofile;
       else {
-        fetch(`https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/items/${this.citem.id}.md`)
+        fetch(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id}.md`)
           .then(async res => {
             if (res.status == 200) Vue.set(this.citem, 'infofile', mdToHtml(await res.text()));
             else Vue.set(this.citem, 'infofile', '');
@@ -188,7 +188,7 @@ const app = new Vue({
     itemDetailsInfofileClicked: function() {
       if (!this.citem.infofile) return;
       contextMenu([
-        { text: 'Copy Link', action: () => copyToClipboard(`https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/items/${this.citem.id}.md`) }
+        { text: 'Copy Link', action: () => copyToClipboard(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id}.md`) }
       ]);
     },
     gotoItemlist: function() {
@@ -280,7 +280,7 @@ function stringUFrame(string, search) {
 
 function loadLang(lang) {
   return new Promise((res, rej) => {
-    fetch('https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/en.json')
+    fetch('https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/en.json')
       .then(r => r.json())
       .then(o => {
         Vue.set(app, 'lang', o);
@@ -295,13 +295,13 @@ function loadLang(lang) {
 
 function loadItems() {
   return new Promise((res, rej) => {
-    fetch('https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/items/items.json')
+    fetch('https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/items.json')
       .then(res => res.json())
       .then(o => {
         o = Object.values(o);
         for (const item of o) {
           item.dispName = app.lang[item.id] || stringifyId(item.id);
-          item.imgURL = `https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/images/${item.id}.png`;
+          item.imgURL = `https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/images/${item.id}.png`;
           item.desc = app.lang[`${item.id}_desc`] || '';
           item.dispDesc = parseBkstr(item.desc);
         }
@@ -318,7 +318,7 @@ function loadItems() {
 
 function loadColorData() {
   return new Promise((res, rej) => {
-    fetch('https://raw.githubusercontent.com/egordorichev/BurningWiki/master/data/color.json')
+    fetch('https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/color.json')
       .then(res => res.json())
       .then(o => {
         Vue.set(app, 'colorData', o);
