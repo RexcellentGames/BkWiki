@@ -2,7 +2,7 @@
 
 Visit on https://wiki.burningknight.net/
 
-**This repo only contains the actual website. For the data displayed on the website click [here](https://github.com/egordorichev/BurningWiki/).** (If this link does not work we might have moved the repo somewhere else and forgot to update this link. Please open an issue here on GitHub.)
+**This repo only contains the actual website. For the data displayed on the website click [here](https://github.com/RexcellentGames/BkWikiData/).** 
 
 
 

@@ -125,7 +125,7 @@ const app = new Vue({
     citemInfofile: function() {
       if (this.citem.infofile) return this.citem.infofile;
       else {
-        fetch(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id}.md`)
+        fetch(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id.split(':').join('_')}.md`)
           .then(async res => {
             if (res.status == 200) Vue.set(this.citem, 'infofile', mdToHtml(await res.text()));
             else Vue.set(this.citem, 'infofile', '');
@@ -188,7 +188,7 @@ const app = new Vue({
     itemDetailsInfofileClicked: function() {
       if (!this.citem.infofile) return;
       contextMenu([
-        { text: 'Copy Link', action: () => copyToClipboard(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id}.md`) }
+        { text: 'Copy Link', action: () => copyToClipboard(`https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/items/${this.citem.id.split(':').join('_')}.md`) }
       ]);
     },
     gotoItemlist: function() {
