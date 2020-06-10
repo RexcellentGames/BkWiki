@@ -301,7 +301,7 @@ function loadItems() {
         o = Object.values(o);
         for (const item of o) {
           item.dispName = app.lang[item.id] || stringifyId(item.id);
-          item.imgURL = `https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/images/${item.id}.png`;
+          item.imgURL = `https://raw.githubusercontent.com/RexcellentGames/BkWikiData/master/data/images/${item.id.split(':').join('_')}.png`;
           item.desc = app.lang[`${item.id}_desc`] || '';
           item.dispDesc = parseBkstr(item.desc);
         }
